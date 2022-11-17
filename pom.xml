@@ -17,6 +17,13 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- Swagger - para interface -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
