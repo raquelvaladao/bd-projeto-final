@@ -11,16 +11,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 
+/*
 @Repository
-public interface PerfilRedeSocialRepository extends JpaRepository<PerfilRedeSocial, PKPerfilRedeSocial> {
+public interface PerfilRedeSocialRepository extends BaseRepository<PKPerfilRedeSocial,PerfilRedeSocial> {
 
-
-    @Transactional
-    @Modifying
-    @Query(nativeQuery = true, value = ConsultasSQL.INSERIR_PERFIL_REDE_SOCIAL)
-    // E
-    void inserirPerfil(@Param(value = "NOME_REDE") String nomeRede,
-                       @Param(value = "NOME_USUARIO") String nomeUsuario);
+//    @Transactional
+//    @Modifying
+//    @Query(nativeQuery = true, value = ConsultasSQL.INSERIR_PERFIL_REDE_SOCIAL)
+//    void inserirPerfil(@Param(value = "NOME_REDE") String nomeRede,
+//                       @Param(value = "NOME_USUARIO") String nomeUsuario) throws SQLException;
 
 }
+*/

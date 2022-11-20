@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping(path = "/")
 @Slf4j
@@ -35,7 +37,7 @@ public class BaseController {
     }
 
     @PostMapping("/perfilrede")
-    public ResponseEntity<Object> criarPerfilRede(@RequestBody RedeSocialRequest rede) {
+    public ResponseEntity<Object> criarPerfilRede(@RequestBody RedeSocialRequest rede) throws SQLException {
         log.info("RedeReq :: {}", rede);
         return ResponseEntity.status(HttpStatus.CREATED).body(criarService.criarRede(rede));
     }

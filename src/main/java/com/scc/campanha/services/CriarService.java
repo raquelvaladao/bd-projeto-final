@@ -4,15 +4,18 @@ package com.scc.campanha.services;
 import com.scc.campanha.controllers.dtos.PublicacaoRequest;
 import com.scc.campanha.controllers.dtos.RedeDivulgadorRequest;
 import com.scc.campanha.controllers.dtos.RedeSocialRequest;
+import com.scc.campanha.database.models.PerfilRedeSocial;
 import com.scc.campanha.database.models.Voluntario;
 import com.scc.campanha.database.models.pks.PKPerfilRedeSocial;
-import com.scc.campanha.database.repositories.PerfilRedeSocialRepository;
+import com.scc.campanha.database.repositories.PerfilRedeSocialRepositoryImpl;
 import com.scc.campanha.database.repositories.PublicacaoRepository;
 import com.scc.campanha.database.repositories.RedeSocialDivulgadorRepository;
 import com.scc.campanha.database.repositories.VoluntarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.SQLException;
 
 @Service
 @Slf4j
@@ -21,9 +24,13 @@ public class CriarService {
     @Autowired
     private VoluntarioRepository voluntarioRepository;
 
+/*
     @Autowired
     private PerfilRedeSocialRepository perfilRedeSocialRepository;
+*/
 
+    @Autowired
+    PerfilRedeSocialRepositoryImpl perfilRedeSocialRepository;
     @Autowired
     private RedeSocialDivulgadorRepository redeSocialDivulgadorRepository;
 
@@ -31,13 +38,21 @@ public class CriarService {
     private PublicacaoRepository publicacaoRepository;
 
     public Object criar(Voluntario voluntario) {
-
-        return voluntarioRepository.save(voluntario);
+        //todo: remover isso
+//        return voluntarioRepository.save(voluntario);
+        return "Não foi criado. Implementar procedure";
     }
 
-    public Object criarRede(RedeSocialRequest request) {
-        perfilRedeSocialRepository.inserirPerfil(request.getNomeRedeSocial(), request.getNomeUsuario());
-        return perfilRedeSocialRepository.findById(PKPerfilRedeSocial.builder().redeSocial(request.getNomeRedeSocial()).nomeUsuario(request.getNomeUsuario()).build());
+    public Object criarRede(RedeSocialRequest request) throws SQLException {
+//        perfilRedeSocialRepository.inserirPerfil(request.getNomeRedeSocial(), request.getNomeUsuario());
+        PerfilRedeSocial entidade = PerfilRedeSocial.builder().pkPerfilRedeSocial(
+                PKPerfilRedeSocial.builder()
+                        .nomeUsuario(request.getNomeUsuario())
+                        .redeSocial(request.getNomeRedeSocial())
+                        .build()
+        ).build();
+        perfilRedeSocialRepository.inserir(entidade);
+        return entidade;
     }
 
     public Object criarRedeDivulgador(RedeDivulgadorRequest request) {
