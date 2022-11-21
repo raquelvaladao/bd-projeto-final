@@ -1,8 +1,16 @@
 package com.scc.campanha.database;
 
+
+/*
+*      Aqui estão todas as consultas feitas, isto é, toda interação com o banco, em SQL.
+* */
 public abstract class ConsultasSQL {
 
     //INSERTS
+    public static final String INSERIR_VOLUNTARIO = "INSERT INTO VOLUNTARIO " +
+            "(V_CPF, V_NOME, V_EMAIL, V_TIPO_VOLUNTARIO, V_CIDADE, V_RUA, V_NUMERO, V_CEP) " +
+            "VALUES(:CPF, :NOME, :EMAIL, :TIPO, :CIDADE, :RUA, :NUMERO, :CEP)";
+
     public static final String INSERIR_PERFIL_REDE_SOCIAL = "INSERT INTO PERFIL_REDE_SOCIAL (PRS_NOME_USUARIO, PRS_REDE_SOCIAL) " +
             "VALUES (:NOME_REDE, :NOME_USUARIO)";
 

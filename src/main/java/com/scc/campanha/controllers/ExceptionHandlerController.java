@@ -16,10 +16,25 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+
+/*
+*           Classe para tratamento centralizado de exceções. Caso não hajam try/catchs no lançamento de alguma exceção
+*           (não há, em outras partes do código), o Spring procurará a exception lançada dentre essas abaixo.
+*           Ao receber uma exceção, verificamos se a mensagem de erro está no nosso dicionário, mapeamos
+*           e devolvemos uma mensagem apresentável ao usuário por meio da montagem do objeto MensagemErro.
+*
+*           Toda resposta contém o objeto MensagemErro, com os erros, uma mensagem apresentável ou mensagem da
+*           exception em si, e o status HTTP web sempre setado como 400 (ou "BAD REQUEST", em que houve algum erro
+*           de violação de constraint ou input malformada).
+* */
 @ControllerAdvice
 @Slf4j
 public class ExceptionHandlerController {
 
+
+    /*
+    *       Exception quando falta um parâmetro ou corpo/atributo enviado ao controller.
+    * */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Object> handleMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
@@ -35,6 +50,11 @@ public class ExceptionHandlerController {
                 );
     }
 
+
+    /*
+    *   Exception lançada quando ocorre normalmente algum erro do oracle ORA-* do banco, que não seja
+    *   de violação de constraint.
+    * */
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<Object> handlerOracleDatabaseException(
             SQLException exception) {
@@ -50,6 +70,10 @@ public class ExceptionHandlerController {
                 );
     }
 
+
+    /*
+    *       Erros de violação de constraint.
+    * */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolationException(
             ConstraintViolationException exception) {
@@ -68,14 +92,10 @@ public class ExceptionHandlerController {
                 );
     }
 
-    private String getMensagemException(ConstraintViolationException exception) {
-        return exception.getCause() != null
-                && exception.getCause().getCause() != null
-                && exception.getCause().getCause().getMessage() != null
-                ? exception.getCause().getCause().getMessage().replaceAll("\\\\", "")
-                : null;
-    }
 
+    /*
+    *       Erros de formatação de consulta SQL.
+    * */
     @ExceptionHandler(SQLGrammarException.class)
     public ResponseEntity<Object> handlerSQLGrammarException(
             SQLGrammarException exception) {
@@ -90,6 +110,17 @@ public class ExceptionHandlerController {
                                 .violacao(exception.getSQLException().getCause() == null ? null : exception.getSQLException().getCause().toString())
                                 .build()
                 );
+    }
+
+    /*
+     *       Pega mensagem da exception ConstraintViolationException e retira os "\" que existem na mensagem com regex.
+     * */
+    private String getMensagemException(ConstraintViolationException exception) {
+        return exception.getCause() != null
+                && exception.getCause().getCause() != null
+                && exception.getCause().getCause().getMessage() != null
+                ? exception.getCause().getCause().getMessage().replaceAll("\\\\", "")
+                : null;
     }
 
 }

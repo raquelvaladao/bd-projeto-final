@@ -39,8 +39,8 @@ public class CriarService {
 
     public Object criar(Voluntario voluntario) {
         //todo: remover isso
-        return voluntarioRepository.criar(voluntario);
-        return "Não foi criado. Implementar procedure";
+       // voluntarioRepository.criar(voluntario);
+        return voluntario;
     }
 
     public Object criarRede(RedeSocialRequest request) throws SQLException {
