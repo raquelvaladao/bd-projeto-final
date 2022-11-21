@@ -33,7 +33,9 @@ public class BaseController {
 
     @PostMapping("/voluntario")
     public ResponseEntity<Object> criarVoluntario(@RequestBody Voluntario voluntario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(criarService.criar(voluntario));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(criarService.criar(voluntario));
     }
 
     @PostMapping("/perfilrede")
@@ -44,12 +46,16 @@ public class BaseController {
 
     @PostMapping("/rededivulgador")
     public ResponseEntity<Object> criarRedeDivulgador(@RequestBody RedeDivulgadorRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(criarService.criarRedeDivulgador(request));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(criarService.criarRedeDivulgador(request));
     }
 
     @PostMapping("/publicacao")
     public ResponseEntity<Object> criarPublicacao(@RequestBody PublicacaoRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(criarService.criarPublicacao(request));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(criarService.criarPublicacao(request));
     }
 
 }

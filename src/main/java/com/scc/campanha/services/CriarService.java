@@ -39,7 +39,7 @@ public class CriarService {
 
     public Object criar(Voluntario voluntario) {
         //todo: remover isso
-//        return voluntarioRepository.save(voluntario);
+        return voluntarioRepository.criar(voluntario);
         return "Não foi criado. Implementar procedure";
     }
 
@@ -51,7 +51,9 @@ public class CriarService {
                         .redeSocial(request.getNomeRedeSocial())
                         .build()
         ).build();
+
         perfilRedeSocialRepository.inserir(entidade);
+
         return entidade;
     }
 

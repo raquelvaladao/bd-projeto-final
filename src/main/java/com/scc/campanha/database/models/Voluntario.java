@@ -38,6 +38,9 @@ public class Voluntario {
     @Column(name = "V_RUA")
     private String rua;
 
+    @Column(name = "V_BAIRRO")
+    private String bairro;
+
     @Column(name = "V_NUMERO", columnDefinition = "CHAR")
     private String numero;
 

@@ -4,7 +4,6 @@ import com.scc.campanha.database.ConsultasSQL;
 import com.scc.campanha.database.models.PerfilRedeSocial;
 import com.scc.campanha.database.models.pks.PKPerfilRedeSocial;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.TransactionDefinition;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +18,8 @@ import javax.transaction.Transactional;
 @Transactional
 public class PerfilRedeSocialRepositoryImpl implements BaseRepository<PKPerfilRedeSocial, PerfilRedeSocial> {
 
+    public static final int SUCESSO = 1;
+
     //pega contexto de conexão com o banco de resources/application.yaml
     @PersistenceContext
     private EntityManager entityManager;
@@ -26,7 +27,7 @@ public class PerfilRedeSocialRepositoryImpl implements BaseRepository<PKPerfilRe
     @Override
     public PerfilRedeSocial inserir(PerfilRedeSocial entidade) {
 
-        //equivale ao prepared statement do jdbc. parametriza a consulta pra evitar sql injection
+        //equivale ao prepared statement do jdbc. parametriza a consulta pra evitar sql injection.
         Query query = entityManager.createNativeQuery(
                 ConsultasSQL.INSERIR_PERFIL_REDE_SOCIAL
         );
@@ -34,7 +35,7 @@ public class PerfilRedeSocialRepositoryImpl implements BaseRepository<PKPerfilRe
         query.setParameter("NOME_REDE", entidade.getPkPerfilRedeSocial().getRedeSocial());
         query.setParameter("NOME_USUARIO", entidade.getPkPerfilRedeSocial().getNomeUsuario());
 
-        int result = query.executeUpdate();
+        query.executeUpdate();
         return entidade;
     }
 
