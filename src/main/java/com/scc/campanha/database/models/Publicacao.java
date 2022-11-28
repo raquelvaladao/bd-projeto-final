@@ -25,14 +25,7 @@ import javax.persistence.*;
  * */
 @Data
 @Entity
-@Table(
-        name = "PUBLICACAO",
-        //todo: deixar aqui ou
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"P_REDE_SOCIAL_NOME_USUARIO", "P_REDE_SOCIAL_REDE_SOCIAL",
-                        "P_CONTEUDO_DIVULGADO_TITULO", "P_CONTEUDO_DIVULGADO_ANO", "P_DATA_HORA"
-                })
-)
+@Table(name = "PUBLICACAO")
 public class Publicacao {
 
     @Id //todo: gerado a partir de um CREATE SEQUENCE do banco
@@ -42,16 +35,16 @@ public class Publicacao {
     //mapeando FK de PerfilRedeSocial
     @ManyToOne(fetch = FetchType.LAZY) //todo: todo
     @JoinColumns({
-            @JoinColumn(name = "P_REDE_SOCIAL_NOME_USUARIO", referencedColumnName = "PRS_NOME_USUARIO"),
-            @JoinColumn(name = "P_REDE_SOCIAL_REDE_SOCIAL", referencedColumnName = "PRS_REDE_SOCIAL"),
+            @JoinColumn(name = "P_NOME_USUARIO_REDE_SOCIAL", referencedColumnName = "PRS_NOME_USUARIO"),
+            @JoinColumn(name = "P_NOME_REDE_SOCIAL_REDE_SOCIAL", referencedColumnName = "PRS_REDE_SOCIAL"),
     })
     private PerfilRedeSocial perfilRedeSocial;
 
     //mapeando FK de ConteudoDivulgado
     @ManyToOne(fetch = FetchType.LAZY) //todo: todo
     @JoinColumns({
-            @JoinColumn(name = "P_CONTEUDO_DIVULGADO_TITULO", referencedColumnName = "CD_TITULO"),
-            @JoinColumn(name = "P_CONTEUDO_DIVULGADO_ANO", referencedColumnName = "CD_ANO"),
+            @JoinColumn(name = "P_TITULO_CONTEUDO_DIVULGADO", referencedColumnName = "CD_TITULO"),
+            @JoinColumn(name = "P_ANO_CONTEUDO_DIVULGADO", referencedColumnName = "CD_ANO_CRIACAO"),
     })
     private ConteudoDivulgado conteudoDivulgado;
 

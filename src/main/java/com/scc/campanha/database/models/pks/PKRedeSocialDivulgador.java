@@ -36,14 +36,14 @@ public class PKRedeSocialDivulgador implements Serializable {
     //mapeamento de FKS. FetchType.LAZY: sem join automático
 
     @MapsId
-    @JoinColumn(name = "RSD_DIVULGADOR_CPF", referencedColumnName = "D_CPF", columnDefinition = "CHAR")
+    @JoinColumn(name = "RSD_CPF_DIVULGADOR", referencedColumnName = "D_CPF", columnDefinition = "CHAR")
     @ManyToOne(fetch = FetchType.LAZY)
     private Divulgacao fkDivulgacao;
 
     @MapsId
     @JoinColumns({
-            @JoinColumn(name = "RSD_REDE_SOCIAL_NOME_USUARIO", referencedColumnName = "PRS_NOME_USUARIO"),
-            @JoinColumn(name = "RSD_REDE_SOCIAL_REDE_SOCIAL", referencedColumnName = "PRS_REDE_SOCIAL")
+            @JoinColumn(name = "RSD_NOME_USUARIO_REDE_SOCIAL", referencedColumnName = "PRS_NOME_USUARIO"),
+            @JoinColumn(name = "RSD_NOME_REDE_SOCIAL_REDE_SOCIAL", referencedColumnName = "PRS_REDE_SOCIAL")
     })
     @ManyToOne(fetch = FetchType.LAZY)
     private PerfilRedeSocial fkPerfilRedeSocial;

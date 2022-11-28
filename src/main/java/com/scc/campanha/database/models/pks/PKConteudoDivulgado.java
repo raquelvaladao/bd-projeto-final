@@ -29,6 +29,6 @@ public class PKConteudoDivulgado implements Serializable {
     private String titulo;
 
     //todo: CD_ANO number(4)
-    @Column(name = "CD_ANO")
-    private String ano;
+    @Column(name = "CD_ANO_CRIACAO")
+    private Integer anoCriacao;
 }

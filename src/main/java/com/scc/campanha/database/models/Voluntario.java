@@ -50,18 +50,18 @@ public class Voluntario {
     @Column(name = "V_TIPO_VOLUNTARIO", columnDefinition = "CHAR")
     private String tipoVoluntario;
 
-    @Column(name = "V_CIDADE")
+    @Column(name = "V_CIDADE_ENDERECO")
     private String cidade;
 
-    @Column(name = "V_RUA")
+    @Column(name = "V_RUA_ENDERECO")
     private String rua;
 
-    @Column(name = "V_BAIRRO")
+    @Column(name = "V_BAIRRO_ENDERECO")
     private String bairro;
 
-    @Column(name = "V_NUMERO", columnDefinition = "CHAR")
+    @Column(name = "V_NUMERO_ENDERECO", columnDefinition = "CHAR")
     private String numero;
 
-    @Column(name = "V_CEP", columnDefinition = "CHAR")
+    @Column(name = "V_CEP_ENDERECO", columnDefinition = "CHAR")
     private String cep;
 }

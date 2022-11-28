@@ -5,12 +5,9 @@ import com.scc.campanha.controllers.dtos.PublicacaoRequest;
 import com.scc.campanha.controllers.dtos.RedeDivulgadorRequest;
 import com.scc.campanha.controllers.dtos.RedeSocialRequest;
 import com.scc.campanha.database.models.Voluntario;
-import com.scc.campanha.services.ConsultaService;
+import com.scc.campanha.services.ConsultarService;
 import com.scc.campanha.services.CriarService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +39,13 @@ import java.sql.SQLException;
 public class BaseController {
 
     @Autowired
-    private ConsultaService consultaService;
+    private ConsultarService consultaService;
 
     @Autowired
     private CriarService criarService;
+
+    @Autowired
+    private ConsultarService consultarService;
 
     @GetMapping("/membros")
     public ResponseEntity<Object> listarMembros() {
@@ -88,5 +88,14 @@ public class BaseController {
                 .status(HttpStatus.CREATED)
                 .body(criarService.criarPublicacao(request));
     }
+    @GetMapping("/conteudos")
+    public ResponseEntity<Object> buscarConteudosPublicados(@RequestParam(value = "inicio") String inicio,
+                                                            @RequestParam(value = "fim") String fim) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(consultaService.buscarConteudosPublicadosComMaisCliques(inicio, fim));
+    }
+
+    
 
 }

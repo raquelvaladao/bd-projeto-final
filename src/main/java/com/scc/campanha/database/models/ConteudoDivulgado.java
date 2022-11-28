@@ -38,6 +38,6 @@ public class ConteudoDivulgado {
     @Column(name = "CD_TEXTO_DIVULGACAO")
     private String textoDivulgacao;
 
-    @Column(name = "CD_PUBLICO")
-    private BigInteger publico;
+    @Column(name = "CD_PUBLICO_ALVO")
+    private String publico;
 }

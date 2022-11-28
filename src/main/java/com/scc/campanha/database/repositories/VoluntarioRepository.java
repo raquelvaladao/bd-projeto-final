@@ -11,14 +11,15 @@ import org.springframework.stereotype.Repository;
 public interface VoluntarioRepository extends JpaRepository<Voluntario, String> {
 
 
-    @Query(nativeQuery = true, value = ConsultasSQL.INSERIR_VOLUNTARIO)
+   /* @Query(nativeQuery = true, value = ConsultasSQL.INSERIR_VOLUNTARIO)
     Voluntario criar(@Param(value = ":CPF") String cpf,
                      @Param(value = ":NOME") String nome,
                      @Param(value = ":EMAIL") String email,
                      @Param(value = ":TIPO") String tipo,
                      @Param(value = ":CIDADE") String cidade,
                      @Param(value = ":RUA") String rua,
+                     @Param(value = ":BAIRRO") String bairro,
                      @Param(value = ":NUMERO") String numero,
                      @Param(value = ":CEP") String cep
-    );
+    );*/
 }

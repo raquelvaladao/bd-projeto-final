@@ -30,13 +30,12 @@ import javax.persistence.*;
 public class Veiculo {
 
     //FetchType.LAZY: sem join automático ao buscar Veículo
-
     @Id
     @Column(name = "V_PLACA", columnDefinition = "CHAR")
     private String placa;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "V_MOTORISTA", columnDefinition = "CHAR")
+    @JoinColumn(name = "V_CPF_MOTORISTA", columnDefinition = "CHAR")
     private Motorista dono;
 
     @Column(name = "V_QTDE_MAX_CAIXAS")
