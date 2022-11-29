@@ -1,6 +1,7 @@
 package com.scc.campanha.controllers;
 
 import com.scc.campanha.controllers.dtos.MensagemErro;
+import com.scc.campanha.utils.SQLDicionarioViolacoes;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.SQLGrammarException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
@@ -23,17 +25,23 @@ import java.util.List;
 *           Ao receber uma exceção, verificamos se a mensagem de erro está no nosso dicionário, mapeamos
 *           e devolvemos uma mensagem apresentável ao usuário por meio da montagem do objeto MensagemErro.
 *
-*           Toda resposta contém o objeto MensagemErro, com os erros, uma mensagem apresentável ou mensagem da
+*           Toda resposta contém o objeto MensagemErro - que contém os erros, uma mensagem apresentável ou mensagem da
 *           exception em si, e o status HTTP web sempre setado como 400 (ou "BAD REQUEST", em que houve algum erro
-*           de violação de constraint ou input malformada).
-* */
+*           de violação de constraint ou input malformada pelo usuário).
+*
+*           @ControllerAdvice: anotação do framework para mapeamento dessa classe como a que irá armazenar
+*                              e tratar exceptions
+*           @ExceptionHandler: anotação do framework Spring para mapear (uma espécie de "try/catch")
+ *                              da exception nomeada em questão.
+ *          @Slf4j: anotação para logs (usado no método log.info())
+ * */
 @ControllerAdvice
 @Slf4j
 public class ExceptionHandlerController {
 
-
     /*
-    *       Exception quando falta um parâmetro ou corpo/atributo enviado ao controller.
+    *       MissingServletRequestParameterException é a exception lançada quando
+    *       falta um parâmetro ou corpo/atributo enviado ao controller.
     * */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Object> handleMissingServletRequestParameterException(
@@ -45,7 +53,7 @@ public class ExceptionHandlerController {
                         MensagemErro.builder()
                                 .dataErro(Date.from(Instant.now()))
                                 .campos(Collections.singletonList(exception.getParameterName()))
-                                .violacao("Adicione os parâmetros para busca")
+                                .violacao("Adicione os parâmetros acima para realizar uma ação")
                                 .build()
                 );
     }
@@ -101,13 +109,17 @@ public class ExceptionHandlerController {
             SQLGrammarException exception) {
         log.info("#handlerSQLGrammarException");
 
+        String mensagemOracle = exception.getSQLException() != null && exception.getSQLException().getCause() != null
+                ? exception.getSQLException().getCause().toString()
+                : null;
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(
                         MensagemErro.builder()
                                 .dataErro(Date.from(Instant.now()))
-                                .campos(exception.getSQLException() == null ? null : List.of(exception.getSQLException().toString()))
-                                .violacao(exception.getSQLException().getCause() == null ? null : exception.getSQLException().getCause().toString())
+                                .campos(exception.getSQLException() == null ? null : List.of(exception.getSQLException().toString().trim()))
+                                .violacao(SQLDicionarioViolacoes.gerarMensagemOracleGenerica(mensagemOracle))
                                 .build()
                 );
     }
@@ -119,7 +131,7 @@ public class ExceptionHandlerController {
         return exception.getCause() != null
                 && exception.getCause().getCause() != null
                 && exception.getCause().getCause().getMessage() != null
-                ? exception.getCause().getCause().getMessage().replaceAll("\\\\", "")
+                ? exception.getCause().getCause().getMessage().replaceAll("\\\\", "").trim()
                 : null;
     }
 

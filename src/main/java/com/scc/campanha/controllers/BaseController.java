@@ -88,6 +88,7 @@ public class BaseController {
                 .status(HttpStatus.CREATED)
                 .body(criarService.criarPublicacao(request));
     }
+
     @GetMapping("/conteudos")
     public ResponseEntity<Object> buscarConteudosPublicados(@RequestParam(value = "inicio") String inicio,
                                                             @RequestParam(value = "fim") String fim) {
