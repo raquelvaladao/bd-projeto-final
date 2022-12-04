@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://https://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+
+<div layout:fragment="content">
+
+    <main role="main">
+        <link rel="stylesheet" th:href="@{~/css/hover.css}">
+        <link rel="stylesheet" th:href="@{~/css/timeline.css}">
+        <link rel="stylesheet" th:href="@{~/css/font.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{~/css/bootstrap-min.css}">
+
+        <section class="jumbotron bg-light text-center" style="margin-bottom: 0 !important;">
+            <div class="container">
+                <h3 class="jumbotron-heading">
+                    <div>Projeto BD - Grupo 5</div>
+                </h3>
+                <p class="lead text-muted"> Escolha uma operação.</p>
+            </div>
+        </section>
+
+        <div class="album bg-light">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow shadow p-4 mb-3 bg-white rounded" role="button">
+                            <a th:href="@{/base/inserir}" class="text-dark" style="text-decoration: none!important">
+                                <img th:src="@{~/images/insert.svg}"
+                                     class="card-img-top"
+                                     data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+                                     alt="Thumbnail [100%x225]"
+                                     style="height: 225px; width: 100%; display: block;"
+                                     data-holder-rendered="true"/>
+
+                                <div class="card-body">
+                                    <h4 class="card-title text-center">Inserir voluntário</h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow shadow p-4 mb-3 bg-white rounded">
+                            <a th:href="@{/base/selectCentros}" class="text-dark" style="text-decoration: none!important">
+                                <img th:src="@{~/images/select.svg}"
+                                     class="card-img-top"
+                                     data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+                                     alt="Thumbnail [100%x225]"
+                                     style="height: 225px; width: 100%; display: block;"
+                                     data-holder-rendered="true"/>
+
+                                <div class="card-body">
+                                    <h4 class="card-title text-center">Filtrar centros</h4>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+
+</html>

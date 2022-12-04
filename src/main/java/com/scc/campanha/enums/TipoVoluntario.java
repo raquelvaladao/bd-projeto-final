@@ -1,17 +1,25 @@
 package com.scc.campanha.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 
-@AllArgsConstructor
+
 public enum TipoVoluntario {
 
     MOT("Motorista"),
-    DIV("Ddivulgação"),
+    DIV("Divulgação"),
     INF("Infraestrutura"),
     COO("Coordenação"),
     ORG("Organização");
 
     private final String nome;
 
+    TipoVoluntario(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

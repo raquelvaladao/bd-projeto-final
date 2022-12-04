@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://https://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout.html}">
+<meta charset="UTF-8">
+<title>Buscar</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+<div layout:fragment="content">
+
+    <div class="container d-flex justify-content-center">
+        <div class="card mb-5 mt-4">
+            <div class="card-header">
+                <p class="text-primary">Filtrar quantidade de arrecadações e triagens dos centros por período de mês</p>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-danger" th:if="${erro != null}" th:text="${erro}"></div>
+                <form th:object="${lista}" th:action="@{/selectCentros}" method="get">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="inicio">Mês inicial:</label>
+                                <input type="text" name="inicio" id="inicio" class="form-control"
+                                       th:value="${mesInicio}"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="fim">Mês final:</label>
+                                <input type="text" name="fim" id="fim" class="form-control" th:value="${mesFim}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="mb-5 btn btn-primary btn-block" value="Buscar"/>
+                    <div th:if="${not #lists.isEmpty(lista)}">
+                        <h2>Lista de centros operacionais</h2>
+                        <table class="table table-striped">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>Rua</th>
+                                <th>Bairro</th>
+                                <th>Número</th>
+                                <th>Total arrecadações</th>
+                                <th>Total triagens</th>
+                                <th>Tipo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="centro: ${lista}">
+                                <td th:text="${centro.rua}">Rua</td>
+                                <td th:text="${centro.bairro}">Bairro</td>
+                                <td th:text="${centro.numero}">Número</td>
+                                <td th:text="${centro.totalArrecadacoes}">Arrecadações</td>
+                                <td th:text="${centro.totalTriagens}">Triagens</td>
+                                <td th:if="${centro.tipo == 'ARRECADACAO'}"><span class="badge rounded-pill bg-dark">Arrecadação</span>
+                                </td>
+                                <td th:if="${centro.tipo == 'AMBOS'}"><span
+                                        class="badge rounded-pill bg-primary">Ambos</span></td>
+                                <td th:if="${centro.tipo == 'TRIAGEM'}"><span
+                                        class="badge rounded-pill bg-dark">Triagem</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(lista)}"
+                         class="card border-light d-flex justify-content-center text-center"
+                         style="width: 70%; height: 70%;">
+                        <h4 class="text-center">Insira os meses que deseja buscar</h4>
+                        <img style="height: 400px; width: 100%;" th:src="@{~/images/empty.svg}"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
