@@ -1,9 +1,6 @@
 package com.scc.campanha.controllers;
 
-import com.scc.campanha.controllers.dtos.BancoDeDadosException;
 import com.scc.campanha.controllers.dtos.MensagemErro;
-import com.scc.campanha.database.models.Voluntario;
-import com.scc.campanha.enums.TipoVoluntario;
 import com.scc.campanha.utils.SQLDicionarioViolacoes;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -11,17 +8,14 @@ import org.hibernate.exception.SQLGrammarException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.NoResultException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -188,21 +182,6 @@ public class ExceptionHandlerController {
                                 .mensagem("Não há resultados para essa consulta.")
                                 .build()
                 );
-    }
-
-    //todo: remover
-    @ExceptionHandler(BancoDeDadosException.class)
-    public ModelAndView handleErros(BancoDeDadosException ex, Model model) {
-        ModelAndView view = new ModelAndView(ex.getView());
-
-        if (ex.getMensagem() != null)
-            model.addAttribute("erro", ex.getMensagem());
-
-        view.addObject("voluntario", ex.getVoluntarioInvalido() != null ? ex.getVoluntarioInvalido() : new Voluntario());
-
-        view.addObject("tiposVoluntario", Arrays.asList(TipoVoluntario.values()));
-
-        return view;
     }
 
 }

@@ -56,16 +56,16 @@ public class EntrypointController {
                 .body(criarService.criarVoluntario(voluntario));
     }
 
-    @GetMapping("/centros")
-    @Operation(summary = "Filtrar quantidade de roupas triadas e recebidas pelos centros entre meses")
-    @Tag(name = "Filtrar centros operacionais (SELECT)")
-    public ResponseEntity<Object> buscarQtdTriagensEArrecadacoesPorCentro(
+    @GetMapping("/roupas")
+    @Operation(summary = "Filtrar tipos de roupas enviadas por mês num dado período de meses")
+    @Tag(name = "Filtrar tipos de roupas enviadas (SELECT)")
+    public ResponseEntity<Object> buscarTipoRoupasEnviadasPorMes(
             @RequestParam(value = "inicio", required = false) String mesInicio,
             @RequestParam(value = "fim", required = false) String mesFim
     ) throws ParseException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(consultaService.buscarQtdTriagensEArrecadacoesPorCentro(mesInicio, mesFim));
+                .body(consultaService.buscarTipoRoupasEnviadasPorMes(mesInicio, mesFim));
     }
 
     @GetMapping("/voluntario/{cpf}")

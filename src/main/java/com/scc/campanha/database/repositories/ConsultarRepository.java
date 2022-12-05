@@ -2,15 +2,13 @@ package com.scc.campanha.database.repositories;
 
 
 import com.scc.campanha.database.ConsultasSQL;
-import com.scc.campanha.database.models.InsercaoVoluntario;
-import com.scc.campanha.database.models.ResultadoColunasSelectCentro;
+import com.scc.campanha.database.models.ResultadoColunasSelectRoupa;
 import com.scc.campanha.database.models.ResultadoSelectVoluntario;
 import com.scc.campanha.enums.TipoVoluntario;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,28 +37,26 @@ public class ConsultarRepository {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    public List<ResultadoColunasSelectCentro> buscarQtdTriagensEArrecadacoesPorCentro(String mesInicio, String mesFim) {
+    public List<ResultadoColunasSelectRoupa> buscarTipoRoupasEnviadasPorMes(String mesInicio, String mesFim) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
         Query query = entityManager.createNativeQuery(
-                ConsultasSQL.BUSCAR_TRIAGENS_DOACOES_DE_CENTROS
+                ConsultasSQL.BUSCAR_ROUPAS_ENTREGUES_POR_PERIODO
         );
 
-        query.setParameter("MES_INICIO", mesInicio);
-        query.setParameter("MES_FIM", mesFim);
+        query.setParameter("INICIO", mesInicio);
+        query.setParameter("FIM", mesFim);
 
         List<Object[]> tuplas = query.getResultList();
-        List<ResultadoColunasSelectCentro> response = new ArrayList<>();
+        List<ResultadoColunasSelectRoupa> response = new ArrayList<>();
 
         tuplas.forEach(tupla ->
                 response.add(
-                        ResultadoColunasSelectCentro.builder()
-                                .rua(tupla[0].toString())
-                                .bairro(tupla[1].toString())
-                                .numero(tupla[2].toString())
-                                .totalTriagens(Integer.parseInt(tupla[3].toString()))
-                                .totalArrecadacoes(Integer.parseInt(tupla[4].toString()))
-                                .tipo(tupla[5].toString())
+                        ResultadoColunasSelectRoupa.builder()
+                                .tipo(tupla[0].toString())
+                                .genero(tupla[1].toString())
+                                .mes(tupla[2].toString())
+                                .totalEnviado(Integer.parseInt(tupla[3].toString()))
                                 .build()
                 )
         );

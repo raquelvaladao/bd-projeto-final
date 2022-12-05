@@ -1,27 +1,40 @@
 package com.scc.campanha.services;
 
 
-import com.scc.campanha.controllers.dtos.BancoDeDadosException;
-import com.scc.campanha.database.models.ResultadoColunasSelectCentro;
+import com.scc.campanha.database.models.ResultadoColunasSelectRoupa;
 import com.scc.campanha.database.models.ResultadoSelectVoluntario;
 import com.scc.campanha.database.repositories.ConsultarRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+
+/*
+ *       Essa classe é responsável por pegar os dados do EntrypointController que foram enviados
+ *       pelo usuário e fazer validações de input caso necessário, enviando os dados para o repository
+ *       para serem salvos ou recuperados do banco. Retorna a resposta do banco para o controller, caso
+ *       não hajam exceptions.
+
+ *       A anotação @Slf4j é apenas para logs internos para debug.
+ *       A anotação @Service é anotação interna desse framework para instanciar essa classe
+ *       no EntrypointController caso necessário
+ * */
 @Service
 @Slf4j
 public class ConsultarService {
 
-    @Autowired
-    private ConsultarRepository consultarRepository;
+    private final ConsultarRepository consultarRepository;
 
-    public List<ResultadoColunasSelectCentro> buscarQtdTriagensEArrecadacoesPorCentro(
+    public ConsultarService(ConsultarRepository consultarRepository) {
+        this.consultarRepository = consultarRepository;
+    }
+
+    //todo: doc
+    public List<ResultadoColunasSelectRoupa> buscarTipoRoupasEnviadasPorMes(
             String inicio, String fim) throws ParseException {
 
         if ((Objects.isNull(inicio) || Objects.isNull(fim)) || (Strings.isBlank(inicio) || Strings.isBlank(fim))) {
@@ -33,33 +46,9 @@ public class ConsultarService {
         fim = dataParaNumero(fim);
 
         if (Integer.parseInt(inicio) > Integer.parseInt(fim))
-            return consultarRepository.buscarQtdTriagensEArrecadacoesPorCentro(fim, inicio);
+            return consultarRepository.buscarTipoRoupasEnviadasPorMes(fim, inicio);
 
-        return consultarRepository.buscarQtdTriagensEArrecadacoesPorCentro(inicio, fim);
-    }
-
-    public List<ResultadoColunasSelectCentro> buscarQtdTriagensEArrecadacoesPorCentroThyme(
-            String inicio, String fim) throws ParseException {
-
-        if (inicio == null || fim == null || inicio.isBlank() || fim.isBlank()) {
-            return new ArrayList<>();
-        }
-
-        try {
-            inicio = dataParaNumero(inicio);
-            fim = dataParaNumero(fim);
-
-            if (Integer.parseInt(inicio) > Integer.parseInt(fim))
-                return consultarRepository.buscarQtdTriagensEArrecadacoesPorCentro(fim, inicio);
-
-            return consultarRepository.buscarQtdTriagensEArrecadacoesPorCentro(inicio, fim);
-        } catch (ParseException e) {
-            log.info("#ParseException");
-            throw BancoDeDadosException.builder()
-                    .view("/selectCentros")
-                    .mensagem("A formatação do mês está inválida. Insira um valor da forma 'MMM'")
-                    .build();
-        }
+        return consultarRepository.buscarTipoRoupasEnviadasPorMes(inicio, fim);
     }
 
     //Dado um mês no formato MMM, retorna o valor numérico

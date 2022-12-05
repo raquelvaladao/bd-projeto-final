@@ -30,6 +30,11 @@ import java.util.regex.Pattern;
 @ConfigurationProperties(prefix = "dicionario")
 public class SQLDicionarioViolacoes {
 
+    /*
+        Mapa do tipo "chave: valor" recuperado do arquivo src/main/resources/dicionario.properties
+        contento os mapeamentos de prefixo da constraint violada e a respectiva mensagem genérica
+    */
+    private Map<String, String> violacoes = new HashMap<>();
 
     /*
         Por padrão o Oracle lança uma mensagem genérica do tipo "ORA-[código]: mensagem".
@@ -37,15 +42,9 @@ public class SQLDicionarioViolacoes {
         erros que não mapeamos no arquivo de dicionário (visto que são muitos, e mapeamos apenas violações
         de constraints).
     */
-
     public static final String QUALQUER_DIGITO = "[\\d\\w]+";
     public static String REGEX_MENSAGEM_ERRO_ORACLE = "ORA-[0-9]+:";
 
-    /*
-        Mapa do tipo "chave: valor" recuperado do arquivo src/main/resources/dicionario.properties
-        contento os mapeamentos de prefixo da constraint violada e a respectiva mensagem genérica
-    */
-    private Map<String, String> violacoes = new HashMap<>();
 
     public SQLDicionarioViolacoes(Map<String, String> violacoes) {
         this.violacoes = violacoes;
@@ -90,10 +89,10 @@ public class SQLDicionarioViolacoes {
                     .mensagem(mensagemException)
                     .build();
 
-        String REG = violacaoOcorrida.getKey().concat(QUALQUER_DIGITO);
+        String REGEX_CONSTRAINT = violacaoOcorrida.getKey().concat(QUALQUER_DIGITO);
 
         final Matcher constraintMapeada = Pattern
-                .compile(REG, Pattern.MULTILINE)
+                .compile(REGEX_CONSTRAINT, Pattern.MULTILINE)
                 .matcher(mensagemException);
 
         return MensagemErro.builder()

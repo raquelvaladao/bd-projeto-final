@@ -1,16 +1,9 @@
 package com.scc.campanha.services;
 
 
-import com.scc.campanha.controllers.dtos.BancoDeDadosException;
 import com.scc.campanha.database.models.InsercaoVoluntario;
-import com.scc.campanha.database.models.Voluntario;
 import com.scc.campanha.database.repositories.InserirRepository;
-import com.scc.campanha.utils.SQLDicionarioViolacoes;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.SQLGrammarException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
 
@@ -41,36 +34,4 @@ public class CriarService {
     public InsercaoVoluntario criarVoluntario(InsercaoVoluntario voluntario) {
         return inserirRepository.inserirVoluntario(voluntario);
     }
-
-    public Voluntario criarVoluntarioThyme(Voluntario voluntario) {
-        try {
-            //todo: add
-            //inserirRepository.inserirVoluntario(voluntario);
-            return voluntario;
-        } catch (ConstraintViolationException | SQLGrammarException e) {
-            log.info("#ConstraintViolationException | SQLGrammarException");
-            String mensagemOracle = e.getSQLException() != null && e.getSQLException().getCause() != null
-                    ? e.getSQLException().getCause().toString() : null;
-            throw BancoDeDadosException.builder()
-                    .view("/insert")
-                    .voluntarioInvalido(voluntario)
-                    .mensagem(SQLDicionarioViolacoes.gerarMensagemORA(mensagemOracle))
-                    .build();
-        } catch (DataIntegrityViolationException e) {
-            log.info("#DataIntegrityViolationException");
-            throw BancoDeDadosException.builder()
-                    .view("/insert")
-                    .voluntarioInvalido(voluntario)
-                    .mensagem(SQLDicionarioViolacoes.gerarMensagemORA(e.getCause().getCause().getMessage()))
-                    .build();
-        } catch (JpaSystemException e) {
-            log.info("#JpaSystemException");
-            throw BancoDeDadosException.builder()
-                    .view("/insert")
-                    .voluntarioInvalido(voluntario)
-                    .mensagem(SQLDicionarioViolacoes.gerarMensagemORA(e.getCause().getCause().getMessage()))
-                    .build();
-        }
-    }
-
 }

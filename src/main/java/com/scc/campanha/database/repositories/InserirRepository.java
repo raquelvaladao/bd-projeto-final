@@ -3,15 +3,11 @@ package com.scc.campanha.database.repositories;
 
 import com.scc.campanha.database.ConsultasSQL;
 import com.scc.campanha.database.models.InsercaoVoluntario;
-import com.scc.campanha.database.models.Voluntario;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 
 /*

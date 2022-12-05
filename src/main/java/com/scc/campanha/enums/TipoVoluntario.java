@@ -1,10 +1,5 @@
 package com.scc.campanha.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-
-
 public enum TipoVoluntario {
 
     MOT("Motorista"),
