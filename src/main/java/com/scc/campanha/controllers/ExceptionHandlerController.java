@@ -23,13 +23,13 @@ import java.util.List;
 
 /*
  *           Classe para tratamento centralizado de exceções. Caso não hajam try/catchs no lançamento de alguma exceção
- *           (não há, em outras partes do código), o Spring procurará a exception lançada dentre essas abaixo.
+ *           (não há, em outras partes do código), o framework procurará a exception lançada dentre essas abaixo.
  *           Ao receber uma exceção, verificamos se a mensagem de erro está no nosso dicionário, mapeamos
  *           e devolvemos uma mensagem apresentável ao usuário por meio da montagem do objeto MensagemErro.
  *
  *           Toda resposta contém o objeto MensagemErro - que contém os erros, uma mensagem apresentável ou mensagem da
- *           exception em si, e o status HTTP web sempre setado como 400 (ou "BAD REQUEST", em que houve algum erro
- *           de violação de constraint ou input malformada pelo usuário).
+ *           exception em si, e o status HTTP web sempre setado como 400 (ou "BAD REQUEST"), em que houve algum erro
+ *           de violação de constraint ou input malformada pelo usuário.
  *
  *           @ControllerAdvice: anotação do framework para mapeamento dessa classe como a que irá armazenar
  *                              e tratar exceptions (ou seja, como não há try/catchs no código, a aplicação
@@ -42,17 +42,21 @@ import java.util.List;
 @Slf4j
 public class ExceptionHandlerController {
 
-    /*
-     *       MissingServletRequestParameterException é a exception lançada quando
-     *       falta um parâmetro ou corpo/atributo enviado ao controller.
-     * */
 
+    /*
+    *       Injetamos a classe de dicionario para verificar se a exception lançada
+    *       possui alguma mensagem que mapeamos.
+    * */
     private final SQLDicionarioViolacoes dicionario;
 
     public ExceptionHandlerController(SQLDicionarioViolacoes dicionario) {
         this.dicionario = dicionario;
     }
 
+    /*
+     *       MissingServletRequestParameterException é a exception lançada quando
+     *       falta um parâmetro ou corpo/atributo enviado ao controller.
+     * */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Object> handleMissingServletRequestParameterException(
             MissingServletRequestParameterException exception) {
@@ -98,11 +102,14 @@ public class ExceptionHandlerController {
             ConstraintViolationException exception) {
         log.info("#handleConstraintViolationException");
 
-//        String violacao = getMensagemException(exception);
+        String mensagem = exception.getSQLException().getCause().toString();
+
+        if(mensagem.contains("NULL"))
+            mensagem = SQLDicionarioViolacoes.gerarMensagemORA(mensagem);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(dicionario.gerarMensagemDeErro(exception.getSQLException().getCause().toString()));
+                .body(dicionario.gerarMensagemDeErro(mensagem));
     }
 
     /*

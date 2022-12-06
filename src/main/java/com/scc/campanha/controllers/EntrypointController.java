@@ -6,6 +6,7 @@ import com.scc.campanha.services.ConsultarService;
 import com.scc.campanha.services.CriarService;
 import com.scc.campanha.utils.SQLDicionarioViolacoes;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,8 @@ public class EntrypointController {
     @PostMapping("/voluntario")
     @Operation(summary = "Insere um voluntário de um dado tipo")
     @Tag(name = "Criar voluntário (INSERT)")
+    @ApiResponse(responseCode = "201", description = "Voluntário criado com sucesso")
+    @ApiResponse(responseCode = "400", description = "Ocorreu um erro")
     public ResponseEntity<Object> criarVoluntario(@RequestBody InsercaoVoluntario voluntario) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -59,6 +62,8 @@ public class EntrypointController {
     @GetMapping("/roupas")
     @Operation(summary = "Filtrar tipos de roupas enviadas por mês num dado período de meses")
     @Tag(name = "Filtrar tipos de roupas enviadas (SELECT)")
+    @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Ocorreu um erro")
     public ResponseEntity<Object> buscarTipoRoupasEnviadasPorMes(
             @RequestParam(value = "inicio", required = false) String mesInicio,
             @RequestParam(value = "fim", required = false) String mesFim
@@ -71,6 +76,8 @@ public class EntrypointController {
     @GetMapping("/voluntario/{cpf}")
     @Operation(summary = "Buscar um voluntário a partir do CPF")
     @Tag(name = "Buscar voluntário (SELECT)")
+    @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Ocorreu um erro")
     public ResponseEntity<Object> buscarVoluntario(@PathVariable String cpf) {
         return ResponseEntity
                 .status(HttpStatus.OK)

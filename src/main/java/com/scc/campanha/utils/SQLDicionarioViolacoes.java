@@ -45,7 +45,6 @@ public class SQLDicionarioViolacoes {
     public static final String QUALQUER_DIGITO = "[\\d\\w]+";
     public static String REGEX_MENSAGEM_ERRO_ORACLE = "ORA-[0-9]+:";
 
-
     public SQLDicionarioViolacoes(Map<String, String> violacoes) {
         this.violacoes = violacoes;
     }
